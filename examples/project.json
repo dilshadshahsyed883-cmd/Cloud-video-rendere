@@ -1,0 +1,8 @@
+{
+  "engine": "ffmpeg",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "assets": [{"name": "a.png", "size_bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"}],
+  "clips": [{"kind": "image", "asset": "a.png", "duration": 2.0}]
+}
