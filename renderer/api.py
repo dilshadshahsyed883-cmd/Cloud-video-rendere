@@ -8,6 +8,7 @@ from pathlib import Path
 import queue
 import re
 import shutil
+import socket
 import signal
 import subprocess
 import threading
@@ -351,12 +352,21 @@ class Handler(BaseHTTPRequestHandler):
             return self.reply(200, {'complete': False, 'offset': offset})
 
 
+class DualStackHTTPServer(ThreadingHTTPServer):
+    """Salad Container Gateway requires IPv6; also accept IPv4 loopback probes."""
+    address_family = socket.AF_INET6
+
+    def server_bind(self):
+        self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+        super().server_bind()
+
+
 def main():
     if len(TOKEN) < 32:
         raise SystemExit('RENDERER_API_TOKEN must be at least 32 characters; refuse insecure start')
     boot_recover()
     threading.Thread(target=worker, daemon=True, name='render-worker').start()
-    server = ThreadingHTTPServer(('0.0.0.0', PORT), Handler)
+    server = DualStackHTTPServer(('::', PORT), Handler)
     print(f'Cloud renderer listening on :{PORT}; encoder={"NVENC" if GPU else "libx264"}', flush=True)
     server.serve_forever()
 
