@@ -1,0 +1,12 @@
+.git
+.github
+tests
+__pycache__
+*.pyc
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.mp3
+*.png
+*.jpg
