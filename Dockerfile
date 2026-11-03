@@ -5,8 +5,8 @@ FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04 AS editly-build
 ENV DEBIAN_FRONTEND=noninteractive
 COPY --from=node /usr/local/ /usr/local/
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 make g++ pkg-config ca-certificates git \
-    libgl1-mesa-dev libglu1-mesa-dev libxi-dev libxext-dev libxrender-dev \
+    python3 python-is-python3 make g++ pkg-config ca-certificates git \
+    libgl1-mesa-dev libglu1-mesa-dev libglew-dev libxi-dev libxext-dev libxrender-dev \
     libegl1-mesa-dev libgbm-dev libcairo2-dev libpango1.0-dev \
     libjpeg-dev libgif-dev librsvg2-dev libasound2-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -26,7 +26,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     RENDERER_STRICT_READY=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 ffmpeg xvfb xauth tini ca-certificates \
-    libgl1 libglu1-mesa libxi6 libxext6 libxrender1 libegl1 libgbm1 \
+    libgl1 libglu1-mesa libglew2.2 libxi6 libxext6 libxrender1 libegl1 libgbm1 \
     libcairo2 libpango-1.0-0 libjpeg-turbo8 libgif7 librsvg2-2 libasound2 \
     fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*

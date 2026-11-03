@@ -54,3 +54,15 @@ Run unit tests: `python -m unittest discover -s tests -v`. Optional local CPU im
 - The direct worker API uses a shared bearer token: place a tenant-aware VPS proxy in front before offering it to multiple users.
 - GPU encoder, encode speed, Linux Editly effects, actual Salad gateway reachability and 30-second sample upload/render/download must all pass before any deploy to VPS_1.
 - Auto Script remains **OFFLINE**; no VPS production deploy in this branch.
+
+## PC/VPS reference client (manual CLI, not yet wired into Concat.exe)
+
+`clients/render_client.py` is a Python 3.10+ stdlib-only reference client. On Windows, set the renderer token as an environment variable locally (not in a command-line argument or checked-in config); use the assigned Salad HTTPS Gateway URL. It computes asset SHA-256, creates the job, resumes per-file chunk uploads, polls status, downloads the MP4 with range support, and verifies its checksum before renaming the final file. Example:
+
+```bash
+export RENDERER_API_TOKEN='<secret from your own SaladCloud deployment>'
+python clients/render_client.py --url 'https://<gateway assigned by SaladCloud>' \
+  --manifest examples/project.json --assets-dir ./my-assets --output ./output.mp4
+```
+
+Do not copy the placeholder URL/token literally. On Windows, supply the secret through the app's credential store for normal use; CLI env var is for test. The V1 client has no native Concat project-format importer or automatic Drive/VPS upload yet.

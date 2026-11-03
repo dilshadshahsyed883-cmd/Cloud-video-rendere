@@ -6,6 +6,7 @@ on:
       - Dockerfile
       - .dockerignore
       - renderer/**
+      - clients/**
       - tests/**
       - .github/workflows/renderer-image.yml
   workflow_dispatch:
